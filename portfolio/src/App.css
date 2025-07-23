@@ -81,6 +81,20 @@ body {
   letter-spacing: 2px;
 }
 
+.blinking-cursor {
+  display: inline-block;
+  width: 1ch;
+  color: #fff;
+  font-weight: 800;
+  font-size: inherit;
+  margin-left: 2px;
+  animation: blink 1s steps(2, start) infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 .hero-tagline {
   font-size: 1.5rem;
   margin-bottom: 2rem;

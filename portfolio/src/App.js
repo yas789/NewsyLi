@@ -5,19 +5,33 @@ const heroText = 'CS & Mathematics';
 
 function HeroSection() {
   const [typedText, setTypedText] = useState('');
+  const [showCursor, setShowCursor] = useState(true);
 
   useEffect(() => {
     let i = 0;
+    setTypedText('');
+
     function typeWriter() {
       if (i < heroText.length) {
-        setTypedText((prev) => prev + heroText.charAt(i));
+        setTypedText((prev) => {
+          if (prev[prev.length - 1] !== heroText.charAt(i)) {
+            return prev + heroText.charAt(i);
+          }
+          return prev;
+        });
         i++;
         setTimeout(typeWriter, 100);
       }
     }
-    setTypedText('');
     setTimeout(typeWriter, 500);
-    // eslint-disable-next-line
+  }, []);
+
+  // Blinking cursor effect
+  useEffect(() => {
+    const cursorInterval = setInterval(() => {
+      setShowCursor((prev) => !prev);
+    }, 500);
+    return () => clearInterval(cursorInterval);
   }, []);
 
   return (
@@ -28,7 +42,10 @@ function HeroSection() {
       <div className="floating-element fe1"></div>
       <div className="floating-element fe2"></div>
       <div className="hero-content">
-        <h1 className="hero-title gradient-text">{typedText}</h1>
+        <h1 className="hero-title gradient-text">
+          {typedText}
+          <span className="blinking-cursor">{showCursor ? '|' : ' '}</span>
+        </h1>
         <p className="hero-tagline">Complexity Theory • Algorithm Design • Mathematical Innovation</p>
         <p className="hero-description">
           Passionate about solving complex computational problems through mathematical insights and algorithmic innovation. Specializing in parameterized complexity theory, fixed-parameter tractability, and cutting-edge algorithm design.
@@ -187,6 +204,12 @@ function App() {
           el.classList.add('visible');
         }
       });
+      // Parallax effect for floating elements
+      const scrolled = window.pageYOffset;
+      document.querySelectorAll('.floating-element').forEach((element, index) => {
+        const speed = 0.5 + (index * 0.2);
+        element.style.transform = `translateY(${scrolled * speed}px)`;
+      });
     }
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // trigger on mount
@@ -200,7 +223,6 @@ function App() {
       <ProjectPortfolio />
       <TechnicalExpertise />
       <ContactSection />
-      {/* Other sections will go here */}
     </div>
   );
 }

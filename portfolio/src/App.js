@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import D4SymmetriesDemo from './D4SymmetriesDemo';
+import FractalExplorer from './FractalExplorer';
 
 const heroText = 'CS & Mathematics';
 
@@ -94,6 +96,8 @@ function ProjectPortfolio({ setPage }) {
       tags: [
         { label: 'Prime Spiral Demo', onClick: () => setPage('prime-spiral'), isDemo: true },
         { label: 'Fourier Epicycles Demo', onClick: () => setPage('fourier-epicycles'), isDemo: true },
+        { label: 'D4 Symmetries Demo', onClick: () => setPage('d4-symmetries'), isDemo: true },
+        { label: 'Fractal Explorer Demo', onClick: () => setPage('fractal-explorer'), isDemo: true },
         { label: 'Python' },
         { label: 'NumPy' },
         { label: 'Mathematical Analysis' }
@@ -537,6 +541,36 @@ function App() {
           </button>
         </div>
         <FourierEpicyclesDemo />
+      </div>
+    );
+  }
+  if (page === 'd4-symmetries') {
+    return (
+      <div className="App">
+        <div style={{margin: '2rem 0'}}>
+          <button
+            className="demo-toggle-btn"
+            onClick={() => setPage('main')}
+            style={{marginBottom: '2rem', padding: '0.5rem 1.2rem', borderRadius: '8px', border: 'none', background: '#a855f7', color: '#fff', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(168,85,247,0.10)', transition: 'background 0.2s'}}>
+            ← Back to Portfolio
+          </button>
+        </div>
+        <D4SymmetriesDemo />
+      </div>
+    );
+  }
+  if (page === 'fractal-explorer') {
+    return (
+      <div className="App">
+        <div style={{margin: '2rem 0'}}>
+          <button
+            className="demo-toggle-btn"
+            onClick={() => setPage('main')}
+            style={{marginBottom: '2rem', padding: '0.5rem 1.2rem', borderRadius: '8px', border: 'none', background: '#a855f7', color: '#fff', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(168,85,247,0.10)', transition: 'background 0.2s'}}>
+            ← Back to Portfolio
+          </button>
+        </div>
+        <FractalExplorer />
       </div>
     );
   }

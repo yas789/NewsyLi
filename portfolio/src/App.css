@@ -40,6 +40,7 @@ body {
   pointer-events: none;
   animation: gridMove 20s linear infinite;
 }
+
 @keyframes gridMove {
   0% { transform: translate(0, 0); }
   100% { transform: translate(10px, 10px); }
@@ -55,8 +56,10 @@ body {
   z-index: 1;
   filter: blur(2px);
 }
+
 .fe1 { top: 10%; right: 10%; animation-delay: 0s; }
 .fe2 { bottom: 10%; left: 10%; animation-delay: 2s; }
+
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-20px); }
@@ -90,6 +93,7 @@ body {
   margin-left: 2px;
   animation: blink 1s steps(2, start) infinite;
 }
+
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
@@ -124,6 +128,7 @@ body {
   animation: fadeInUp 1s ease-out 0.6s both;
   margin-bottom: 1.5em;
 }
+
 .cta-button:hover {
   transform: translateY(-3px);
   box-shadow: 0 20px 40px rgba(168, 85, 247, 0.4);
@@ -132,6 +137,7 @@ body {
 nav {
   margin-top: 12px;
 }
+
 nav a {
   color: #a855f7;
   text-decoration: none;
@@ -139,6 +145,7 @@ nav a {
   font-weight: 500;
   transition: color 0.2s;
 }
+
 nav a:hover {
   color: #ec4899;
 }
@@ -157,6 +164,7 @@ nav a:hover {
   transform: translateY(30px);
   animation: fadeInCard 1s forwards;
 }
+
 .card:hover, .project-card:hover, .featured-project:hover, .skill-category:hover {
   transform: translateY(-5px) scale(1.02);
   box-shadow: 0 20px 40px rgba(168, 85, 247, 0.15);
@@ -182,6 +190,7 @@ nav a:hover {
   gap: 0.5rem;
   margin-top: 1rem;
 }
+
 .tag, .skill-item {
   padding: 0.5rem 1rem;
   background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
@@ -191,6 +200,7 @@ nav a:hover {
   font-weight: 500;
   transition: all 0.3s ease;
 }
+
 .skill-item:hover, .tag:hover {
   background: rgba(168, 85, 247, 0.3);
   transform: scale(1.05);
@@ -205,6 +215,14 @@ nav a:hover {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  opacity: 0;
+  transform: scale(0.92) translateY(30px);
+  transition: opacity 0.7s cubic-bezier(.77,0,.18,1), transform 0.7s cubic-bezier(.77,0,.18,1);
+}
+
+.section-title.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
 }
 
 .section {
@@ -221,6 +239,7 @@ nav a:hover {
   box-shadow: 0 4px 24px rgba(168, 85, 247, 0.10);
   margin-top: 3rem;
 }
+
 .contact-links {
   display: flex;
   justify-content: center;
@@ -228,6 +247,7 @@ nav a:hover {
   margin-top: 2rem;
   flex-wrap: wrap;
 }
+
 .contact-link {
   display: inline-block;
   padding: 1rem 2rem;
@@ -243,10 +263,12 @@ nav a:hover {
   opacity: 0;
   transform: translateY(40px);
 }
+
 .contact-link.visible {
   opacity: 1;
   transform: translateY(0);
 }
+
 .contact-link:hover {
   background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
   color: #fff;
@@ -260,41 +282,13 @@ nav a:hover {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
 @keyframes fadeInCard {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive Design */
-@media (max-width: 900px) {
-  .App {
-    padding: 0 1rem;
-  }
-  .card-grid, .projects-grid, .skills-grid {
-    flex-direction: column;
-    align-items: center;
-  }
-  .card, .project-card, .skill-category {
-    width: 90%;
-    min-width: 0;
-  }
-}
-@media (max-width: 600px) {
-  .hero-title, .gradient-text {
-    font-size: 2rem;
-  }
-  .hero-content {
-    padding: 1rem 0.5rem;
-  }
-  .section-title {
-    font-size: 1.5rem;
-  }
-  .hero {
-    min-height: 40vh;
-    padding: 2rem 0;
-  }
-}
-
+/* Featured Project Styles */
 .featured-project {
   background: rgba(255, 255, 255, 0.13);
   backdrop-filter: blur(32px);
@@ -309,10 +303,12 @@ nav a:hover {
   opacity: 0;
   transform: translateY(40px);
 }
+
 .featured-project:hover {
   box-shadow: 0 24px 48px rgba(168, 85, 247, 0.25);
   border-color: #ec4899;
 }
+
 .project-title {
   font-size: 2.2rem;
   font-weight: 700;
@@ -323,36 +319,18 @@ nav a:hover {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
 .project-subtitle {
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
   opacity: 0.85;
 }
+
 .project-description {
   font-size: 1.08rem;
   line-height: 1.6;
   margin-bottom: 1.2rem;
   opacity: 0.93;
-}
-.tech-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.7rem;
-  margin-bottom: 1.2rem;
-}
-.tag {
-  padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.18) 0%, rgba(236, 72, 153, 0.18) 100%);
-  border: 1px solid rgba(168, 85, 247, 0.3);
-  border-radius: 25px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #fff;
-  transition: background 0.2s, border-color 0.2s;
-}
-.tag:hover {
-  background: rgba(168, 85, 247, 0.3);
-  border-color: #ec4899;
 }
 
 /* Fade-in on scroll animation */
@@ -361,6 +339,7 @@ nav a:hover {
   transform: translateY(40px);
   transition: opacity 0.8s cubic-bezier(.77,0,.18,1), transform 0.8s cubic-bezier(.77,0,.18,1);
 }
+
 .fade-in-on-scroll.visible {
   opacity: 1;
   transform: translateY(0);
@@ -386,11 +365,13 @@ nav a:hover {
   transform: translateY(40px);
   cursor: pointer;
 }
+
 .project-card:hover {
   box-shadow: 0 16px 48px rgba(236, 72, 153, 0.18);
   border-color: #ec4899;
   transform: translateY(-8px) scale(1.03);
 }
+
 .project-card h3 {
   font-size: 1.4rem;
   margin-bottom: 0.7rem;
@@ -400,30 +381,11 @@ nav a:hover {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
 .project-card p {
   line-height: 1.5;
   opacity: 0.92;
   margin-bottom: 1rem;
-}
-.tech-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-.tag {
-  padding: 0.45rem 0.9rem;
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.18) 0%, rgba(236, 72, 153, 0.18) 100%);
-  border: 1px solid rgba(168, 85, 247, 0.3);
-  border-radius: 25px;
-  font-size: 0.92rem;
-  font-weight: 500;
-  color: #fff;
-  transition: background 0.2s, border-color 0.2s;
-}
-.tag:hover {
-  background: rgba(168, 85, 247, 0.3);
-  border-color: #ec4899;
 }
 
 .skills-grid {
@@ -445,11 +407,13 @@ nav a:hover {
   opacity: 0;
   transform: translateY(40px);
 }
+
 .skill-category:hover {
   box-shadow: 0 16px 48px rgba(236, 72, 153, 0.18);
   border-color: #ec4899;
   transform: translateY(-8px) scale(1.03);
 }
+
 .skill-category h3 {
   font-size: 1.3rem;
   margin-bottom: 1.2rem;
@@ -459,11 +423,13 @@ nav a:hover {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
 .skill-list {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
+
 .skill-item {
   padding: 0.45rem 0.9rem;
   background: linear-gradient(135deg, rgba(168, 85, 247, 0.18) 0%, rgba(236, 72, 153, 0.18) 100%);
@@ -474,7 +440,62 @@ nav a:hover {
   color: #fff;
   transition: background 0.2s, border-color 0.2s;
 }
+
 .skill-item:hover {
   background: rgba(168, 85, 247, 0.3);
   border-color: #ec4899;
+}
+
+.section-divider {
+  width: 100%;
+  height: 60px;
+  margin: -1px 0 0 0;
+  z-index: 2;
+  position: relative;
+  pointer-events: none;
+  background: transparent;
+}
+
+.demo-tag:hover {
+  background: linear-gradient(135deg, #ec4899 0%, #a855f7 100%) !important;
+  color: #fff !important;
+  border-color: #ec4899 !important;
+  box-shadow: 0 0 16px 2px #ec4899, 0 2px 8px rgba(168,85,247,0.10) !important;
+  transform: scale(1.07) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .App {
+    padding: 0 1rem;
+  }
+  
+  .card-grid, .projects-grid, .skills-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .card, .project-card, .skill-category {
+    width: 90%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-title, .gradient-text {
+    font-size: 2rem;
+  }
+  
+  .hero-content {
+    padding: 1rem 0.5rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .hero {
+    min-height: 40vh;
+    padding: 2rem 0;
+  }
 }

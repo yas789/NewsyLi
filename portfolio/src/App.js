@@ -59,7 +59,7 @@ function HeroSection() {
 function FeaturedResearch() {
   return (
     <section className="section" id="featured-research">
-      <h2 className="section-title">Featured Research</h2>
+      <h2 className="section-title fade-in-on-scroll">Featured Research</h2>
       <div className="featured-project fade-in-on-scroll">
         <h3 className="project-title">Pattern Backtracking Algorithm</h3>
         <p className="project-subtitle">Fixed-Parameter Tractable Solution for Workflow Satisfiability</p>
@@ -81,7 +81,7 @@ function FeaturedResearch() {
   );
 }
 
-function ProjectPortfolio() {
+function ProjectPortfolio({ setPage }) {
   const projects = [
     {
       title: 'Advanced Data Structures',
@@ -91,7 +91,13 @@ function ProjectPortfolio() {
     {
       title: 'Mathematical Modeling Suite',
       desc: 'Collection of mathematical modeling projects including differential equation solvers, optimization algorithms, and statistical analysis tools with real-world applications.',
-      tags: ['Python', 'NumPy', 'Mathematical Analysis']
+      tags: [
+        { label: 'Prime Spiral Demo', onClick: () => setPage('prime-spiral'), isDemo: true },
+        { label: 'Fourier Epicycles Demo', onClick: () => setPage('fourier-epicycles'), isDemo: true },
+        { label: 'Python' },
+        { label: 'NumPy' },
+        { label: 'Mathematical Analysis' }
+      ]
     },
     {
       title: 'Graph Theory Applications',
@@ -116,7 +122,7 @@ function ProjectPortfolio() {
   ];
   return (
     <section className="section" id="projects">
-      <h2 className="section-title">Project Portfolio</h2>
+      <h2 className="section-title fade-in-on-scroll">Project Portfolio</h2>
       <div className="projects-grid">
         {projects.map((proj, i) => (
           <div className="project-card fade-in-on-scroll" key={i}>
@@ -124,7 +130,18 @@ function ProjectPortfolio() {
             <p>{proj.desc}</p>
             <div className="tech-tags">
               {proj.tags.map((tag, j) => (
-                <span className="tag" key={j}>{tag}</span>
+                tag.isDemo ? (
+                  <span
+                    className="tag demo-tag"
+                    key={j}
+                    onClick={tag.onClick}
+                    style={{ cursor: 'pointer', background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)', color: '#fff', fontWeight: 600, border: '2px solid #a855f7', boxShadow: '0 2px 8px rgba(168,85,247,0.10)', transition: 'background 0.2s' }}
+                  >
+                    {tag.label}
+                  </span>
+                ) : (
+                  <span className="tag" key={j}>{tag.label || tag}</span>
+                )
               ))}
             </div>
           </div>
@@ -159,7 +176,7 @@ function TechnicalExpertise() {
   ];
   return (
     <section className="section" id="skills">
-      <h2 className="section-title">Technical Expertise</h2>
+      <h2 className="section-title fade-in-on-scroll">Technical Expertise</h2>
       <div className="skills-grid">
         {skills.map((cat, i) => (
           <div className="skill-category fade-in-on-scroll" key={i}>
@@ -176,10 +193,253 @@ function TechnicalExpertise() {
   );
 }
 
+function PrimeSpiralDemo() {
+  const [numPoints, setNumPoints] = useState(100);
+  const points = [];
+  const size = 320;
+  const center = size / 2;
+  const scale = size / 2.2 / Math.sqrt(numPoints);
+  let n = 1, count = 0;
+  function isPrime(x) {
+    if (x < 2) return false;
+    for (let i = 2; i <= Math.sqrt(x); i++) if (x % i === 0) return false;
+    return true;
+  }
+  while (count < numPoints) {
+    if (isPrime(n)) {
+      const angle = count * 0.32;
+      const r = scale * Math.sqrt(count);
+      const x = center + r * Math.cos(angle);
+      const y = center + r * Math.sin(angle);
+      points.push(<circle key={n} cx={x} cy={y} r={3.5} fill="#a855f7" stroke="#fff" strokeWidth="1" />);
+      count++;
+    }
+    n++;
+  }
+  return (
+    <div className="prime-spiral-demo fade-in-on-scroll">
+      <h3>Prime Number Spiral</h3>
+      <svg width={size} height={size} style={{background: 'rgba(255,255,255,0.03)', borderRadius: '12px', marginBottom: '1rem'}}>
+        {points}
+      </svg>
+      <div style={{marginTop: '0.5rem'}}>
+        <label htmlFor="numPoints">Number of Primes: </label>
+        <input
+          id="numPoints"
+          type="range"
+          min="20"
+          max="300"
+          value={numPoints}
+          onChange={e => setNumPoints(Number(e.target.value))}
+          style={{margin: '0 10px'}}
+        />
+        <span style={{color: '#a855f7', fontWeight: 600}}>{numPoints}</span>
+      </div>
+    </div>
+  );
+}
+
+function FourierEpicyclesDemo() {
+  const [N, setN] = useState(10);
+  const [t, setT] = useState(0);
+  const size = 400;
+  const centerY = size / 2;
+  const centerX = 120;
+  const wave = [];
+  const dt = 0.01;
+  const maxWaveLength = 220;
+
+  // Animate t
+  useEffect(() => {
+    let anim;
+    function animate() {
+      setT((prev) => prev + dt);
+      anim = requestAnimationFrame(animate);
+    }
+    anim = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(anim);
+  }, []);
+
+  // Calculate epicycles and wave
+  let x = centerX;
+  let y = centerY;
+  const circles = [];
+  for (let k = 0; k < N; k++) {
+    const n = 2 * k + 1;
+    const radius = 50 * (4 / (n * Math.PI));
+    const prevX = x;
+    const prevY = y;
+    x += radius * Math.cos(n * t);
+    y += radius * Math.sin(n * t);
+    circles.push(
+      <g key={k}>
+        <circle cx={prevX} cy={prevY} r={Math.abs(radius)} fill="none" stroke="#a855f7" strokeWidth="1.2" opacity="0.7" />
+        <line x1={prevX} y1={prevY} x2={x} y2={y} stroke="#ec4899" strokeWidth="2" />
+      </g>
+    );
+  }
+
+  // Build the wave
+  wave.unshift(y);
+  if (wave.length > maxWaveLength) wave.pop();
+
+  return (
+    <div className="fade-in-on-scroll" style={{ background: '#1a1a2e', minHeight: '100vh', padding: '2rem' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#fff', marginBottom: '2rem' }}>Mathematical Visualizations</h1>
+        
+        {/* Fourier Epicycles */}
+        <div style={{ marginBottom: '3rem' }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: '600', color: '#fff', marginBottom: '1rem' }}>Fourier Series Epicycles</h2>
+          <div style={{ marginBottom: '1rem' }}>
+            <label style={{ color: '#fff', marginRight: '1rem' }}>
+              Terms: {N}
+              <input
+                type="range"
+                min="1"
+                max="20"
+                value={N}
+                onChange={(e) => setN(parseInt(e.target.value))}
+                style={{ marginLeft: '0.5rem' }}
+              />
+            </label>
+          </div>
+          
+          <svg width={size + 250} height={size} style={{ background: '#2a2a3e', borderRadius: '8px' }}>
+            {circles}
+            <circle cx={x} cy={y} r="3" fill="#10b981" />
+            <line x1={x} y1={y} x2={centerX + 250} y2={y} stroke="#10b981" strokeWidth="2" strokeDasharray="5,5" />
+            
+            <polyline
+              points={wave.map((py, i) => `${centerX + 250 - i},${py}`).join(' ')}
+              fill="none"
+              stroke="#10b981"
+              strokeWidth="2"
+            />
+          </svg>
+        </div>
+
+        {/* Modular Circle Visualization */}
+        <ModularCircleDemo t={t} />
+      </div>
+    </div>
+  );
+}
+
+function ModularCircleDemo({ t }) {
+  const circleRadius = 150;
+  const centerX = 200;
+  const centerY = 200;
+  const speeds = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4]; // Slower, more varied speeds
+  const vectorLength = 60;
+  
+  // Check if any vector is near the starting position (0 degrees)
+  const threshold = 0.15; // Small threshold for "at beginning"
+  const isAnyAtStart = speeds.some(speed => {
+    const angle = (speed * t) % (2 * Math.PI);
+    return Math.abs(angle) < threshold || Math.abs(angle - 2 * Math.PI) < threshold;
+  });
+  
+  const circleColor = isAnyAtStart ? "#ef4444" : "#3b82f6"; // Red if any at start, blue otherwise
+  
+  return (
+    <div>
+      <h2 style={{ fontSize: '1.5rem', fontWeight: '600', color: '#fff', marginBottom: '1rem' }}>Modular Rotation Circle</h2>
+      <p style={{ color: '#9ca3af', marginBottom: '1rem' }}>
+        Circle turns red when any vector points to the starting position (0°). 
+        Each vector rotates at a different speed from the center.
+      </p>
+      
+      <svg width={400} height={400} style={{ background: '#2a2a3e', borderRadius: '8px' }}>
+        {/* Main circle */}
+        <circle 
+          cx={centerX} 
+          cy={centerY} 
+          r={circleRadius} 
+          fill="none" 
+          stroke={circleColor} 
+          strokeWidth="4"
+          style={{ transition: 'stroke 0.2s' }}
+        />
+        
+        {/* Starting position marker */}
+        <line 
+          x1={centerX + circleRadius - 15} 
+          y1={centerY} 
+          x2={centerX + circleRadius + 15} 
+          y2={centerY} 
+          stroke="#ffffff" 
+          strokeWidth="4"
+        />
+        <text x={centerX + circleRadius + 25} y={centerY + 5} fill="#ffffff" fontSize="14">0°</text>
+        
+        {/* Rotating vector sticks */}
+        {speeds.map((speed, i) => {
+          const angle = speed * t;
+          const endX = centerX + vectorLength * Math.cos(angle);
+          const endY = centerY + vectorLength * Math.sin(angle);
+          
+          // Color based on proximity to start
+          const normalizedAngle = angle % (2 * Math.PI);
+          const isNearStart = Math.abs(normalizedAngle) < threshold || Math.abs(normalizedAngle - 2 * Math.PI) < threshold;
+          const vectorColor = isNearStart ? "#fbbf24" : `hsl(${i * 45}, 70%, 60%)`;
+          
+          return (
+            <g key={i}>
+              {/* Vector stick from center */}
+              <line 
+                x1={centerX} 
+                y1={centerY} 
+                x2={endX} 
+                y2={endY} 
+                stroke={vectorColor} 
+                strokeWidth="3"
+                style={{ transition: 'stroke 0.2s' }}
+              />
+              
+              {/* Arrowhead */}
+              <polygon
+                points={`${endX},${endY} ${endX - 8 * Math.cos(angle - 0.3)},${endY - 8 * Math.sin(angle - 0.3)} ${endX - 8 * Math.cos(angle + 0.3)},${endY - 8 * Math.sin(angle + 0.3)}`}
+                fill={vectorColor}
+                style={{ transition: 'fill 0.2s' }}
+              />
+              
+              {/* Speed labels near the tips */}
+              <text 
+                x={centerX + (vectorLength + 20) * Math.cos(angle)} 
+                y={centerY + (vectorLength + 20) * Math.sin(angle) + 4} 
+                fill="#9ca3af" 
+                fontSize="12" 
+                textAnchor="middle"
+              >
+                {speed}×
+              </text>
+            </g>
+          );
+        })}
+        
+        {/* Center dot */}
+        <circle cx={centerX} cy={centerY} r="4" fill="#ffffff" />
+        
+        {/* Status indicator */}
+        <rect x={10} y={10} width={120} height={30} fill="rgba(0,0,0,0.7)" rx="5" />
+        <text x={70} y={30} fill={isAnyAtStart ? "#ef4444" : "#10b981"} fontSize="14" textAnchor="middle">
+          {isAnyAtStart ? "ALIGNED" : "ROTATING"}
+        </text>
+      </svg>
+      
+      <div style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#9ca3af' }}>
+        <p>Each vector rotates from the center at different speeds (shown as multipliers).</p>
+        <p>The circle turns red when any vector aligns with the 0° starting position.</p>
+      </div>
+    </div>
+  );
+}
+
 function ContactSection() {
   return (
     <section className="contact section" id="contact">
-      <h2 className="section-title">Let's Connect</h2>
+      <h2 className="section-title fade-in-on-scroll">Let's Connect</h2>
       <p style={{fontSize: '1.1rem', opacity: 0.8, marginBottom: '2rem'}}>
         Interested in collaboration, research opportunities, or discussing computational complexity theory?
       </p>
@@ -193,7 +453,25 @@ function ContactSection() {
   );
 }
 
+function SectionDivider() {
+  return (
+    <div className="section-divider" aria-hidden="true">
+      <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{width: '100%', height: '60px', display: 'block'}}>
+        <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="url(#waveGradient)"/>
+        <defs>
+          <linearGradient id="waveGradient" x1="0" y1="0" x2="1440" y2="80" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#a855f7" stopOpacity="0.18" />
+            <stop offset="1" stopColor="#ec4899" stopOpacity="0.18" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  );
+}
+
 function App() {
+  const [page, setPage] = useState('main');
+
   // Scroll-triggered fade-in for .fade-in-on-scroll elements
   useEffect(() => {
     function handleScroll() {
@@ -216,12 +494,63 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Smooth scroll for navigation links
+  useEffect(() => {
+    function handleNavClick(e) {
+      if (e.target.tagName === 'A' && e.target.getAttribute('href')?.startsWith('#')) {
+        const targetId = e.target.getAttribute('href').slice(1);
+        const target = document.getElementById(targetId);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
+    document.addEventListener('click', handleNavClick);
+    return () => document.removeEventListener('click', handleNavClick);
+  }, []);
+
+  if (page === 'prime-spiral') {
+    return (
+      <div className="App">
+        <div style={{margin: '2rem 0'}}>
+          <button
+            className="demo-toggle-btn"
+            onClick={() => setPage('main')}
+            style={{marginBottom: '2rem', padding: '0.5rem 1.2rem', borderRadius: '8px', border: 'none', background: '#a855f7', color: '#fff', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(168,85,247,0.10)', transition: 'background 0.2s'}}>
+            ← Back to Portfolio
+          </button>
+        </div>
+        <PrimeSpiralDemo />
+      </div>
+    );
+  }
+  if (page === 'fourier-epicycles') {
+    return (
+      <div className="App">
+        <div style={{margin: '2rem 0'}}>
+          <button
+            className="demo-toggle-btn"
+            onClick={() => setPage('main')}
+            style={{marginBottom: '2rem', padding: '0.5rem 1.2rem', borderRadius: '8px', border: 'none', background: '#a855f7', color: '#fff', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(168,85,247,0.10)', transition: 'background 0.2s'}}>
+            ← Back to Portfolio
+          </button>
+        </div>
+        <FourierEpicyclesDemo />
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       <HeroSection />
+      <SectionDivider />
       <FeaturedResearch />
-      <ProjectPortfolio />
+      <SectionDivider />
+      <ProjectPortfolio setPage={setPage} />
+      <SectionDivider />
       <TechnicalExpertise />
+      <SectionDivider />
       <ContactSection />
     </div>
   );

@@ -44,10 +44,17 @@ function HeroSection() {
       <div className="floating-element fe1"></div>
       <div className="floating-element fe2"></div>
       <div className="hero-content">
-        <h1 className="hero-title gradient-text">
+        <div className="personal-intro">
+          <h1 className="hero-name">Yassir Maknaoui</h1>
+          <div className="education-badge">
+            <span className="degree">BSc Computer Science & Mathematics</span>
+            <span className="honors">First Class Honors</span>
+          </div>
+        </div>
+        <h2 className="hero-title gradient-text">
           {typedText}
           <span className="blinking-cursor">{showCursor ? '|' : ' '}</span>
-        </h1>
+        </h2>
         <p className="hero-tagline">Complexity Theory • Algorithm Design • Mathematical Innovation</p>
         <p className="hero-description">
           Passionate about solving complex computational problems through mathematical insights and algorithmic innovation. Specializing in parameterized complexity theory, fixed-parameter tractability, and cutting-edge algorithm design.

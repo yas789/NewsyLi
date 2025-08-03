@@ -9,7 +9,7 @@ function FractalExplorer() {
   const [centerY, setCenterY] = useState(0);
   const [maxIterations, setMaxIterations] = useState(100);
   const [juliaC, setJuliaC] = useState({ real: -0.7, imag: 0.27015 });
-  const [colorScheme, setColorScheme] = useState('classic');
+  const [colorScheme, setColorScheme] = useState('aurora');
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationSpeed, setAnimationSpeed] = useState(1);
   const animationRef = useRef(null);
@@ -17,38 +17,56 @@ function FractalExplorer() {
   const width = 800;
   const height = 600;
 
-  // Color schemes
+  // Enhanced color schemes with more vibrant and varied palettes
   const colorSchemes = {
-    classic: (iter, maxIter) => {
-      if (iter === maxIter) return [0, 0, 0];
-      const hue = (iter / maxIter) * 360;
-      return hslToRgb(hue, 100, 50);
-    },
-    fire: (iter, maxIter) => {
+    aurora: (iter, maxIter) => {
       if (iter === maxIter) return [0, 0, 0];
       const t = iter / maxIter;
+      // Smooth gradient through teal, purple, pink, and gold
       return [
-        Math.floor(255 * Math.min(1, t * 2)),
-        Math.floor(255 * Math.max(0, Math.min(1, (t - 0.3) * 2))),
-        Math.floor(255 * Math.max(0, Math.min(1, (t - 0.7) * 3)))
+        Math.floor(155 * Math.sin(t * Math.PI * 1.5) + 100),
+        Math.floor(155 * Math.sin(t * Math.PI * 2.0) + 50),
+        Math.floor(255 * Math.sin(t * Math.PI * 0.8 + 1) + 100)
       ];
     },
-    ocean: (iter, maxIter) => {
+    neon: (iter, maxIter) => {
       if (iter === maxIter) return [0, 0, 0];
       const t = iter / maxIter;
+      // Vibrant neon colors with high saturation
       return [
-        Math.floor(255 * Math.max(0, Math.min(1, (t - 0.5) * 2))),
-        Math.floor(255 * t),
-        Math.floor(255 * Math.min(1, t * 1.5))
+        Math.floor(255 * Math.pow(Math.sin(t * 5 + 0) * 0.5 + 0.5, 2)),
+        Math.floor(255 * Math.pow(Math.sin(t * 5 + 2) * 0.5 + 0.5, 2)),
+        Math.floor(255 * Math.pow(Math.sin(t * 5 + 4) * 0.5 + 0.5, 2))
       ];
     },
-    purple: (iter, maxIter) => {
+    deepspace: (iter, maxIter) => {
       if (iter === maxIter) return [0, 0, 0];
       const t = iter / maxIter;
+      // Deep space blues and purples with bright highlights
       return [
-        Math.floor(255 * Math.min(1, t * 1.5)),
-        Math.floor(255 * Math.max(0, Math.min(1, (t - 0.3) * 1.5))),
-        Math.floor(255 * Math.min(1, t * 2))
+        Math.floor(100 + 100 * Math.sin(t * 2 * Math.PI + 2)),
+        Math.floor(50 + 50 * Math.sin(t * 3 * Math.PI + 1)),
+        Math.floor(150 + 100 * Math.sin(t * 1.5 * Math.PI))
+      ];
+    },
+    inferno: (iter, maxIter) => {
+      if (iter === maxIter) return [0, 0, 0];
+      const t = iter / maxIter;
+      // Fiery inferno colors
+      return [
+        Math.min(255, Math.floor(255 * Math.pow(t, 0.4))),
+        Math.min(255, Math.floor(255 * Math.pow(t, 2))),
+        Math.min(255, Math.floor(255 * Math.pow(t, 3)))
+      ];
+    },
+    electric: (iter, maxIter) => {
+      if (iter === maxIter) return [0, 0, 0];
+      const t = iter / maxIter;
+      // Electric blue and purple with bright highlights
+      return [
+        Math.floor(100 + 155 * Math.abs(Math.sin(t * Math.PI * 2))),
+        Math.floor(100 + 100 * Math.abs(Math.sin(t * Math.PI * 3))),
+        Math.floor(200 + 55 * Math.abs(Math.cos(t * Math.PI * 4)))
       ];
     }
   };

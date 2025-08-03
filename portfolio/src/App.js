@@ -1,7 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './App.css';
 import D4SymmetriesDemo from './D4SymmetriesDemo';
 import FractalExplorer from './FractalExplorer';
+import ThreeDBackground from './ThreeDBackground';
+
+// Animated Background Elements
+const AnimatedBackground = () => {
+  return (
+    <>
+      <div className="bg-shape bg-shape-1"></div>
+      <div className="bg-shape bg-shape-2"></div>
+      <div className="bg-shape bg-shape-3"></div>
+    </>
+  );
+};
 
 const heroText = 'CS & Mathematics';
 
@@ -481,6 +493,14 @@ function SectionDivider() {
 }
 
 function App() {
+  // Add smooth scroll behavior
+  useEffect(() => {
+    document.documentElement.style.scrollBehavior = 'smooth';
+    return () => {
+      document.documentElement.style.scrollBehavior = '';
+    };
+  }, []);
+
   const [page, setPage] = useState('main');
 
   // Scroll-triggered fade-in for .fade-in-on-scroll elements
@@ -584,15 +604,18 @@ function App() {
 
   return (
     <div className="App">
-      <HeroSection />
-      <SectionDivider />
-      <FeaturedResearch />
-      <SectionDivider />
-      <ProjectPortfolio setPage={setPage} />
-      <SectionDivider />
-      <TechnicalExpertise />
-      <SectionDivider />
-      <ContactSection />
+      <ThreeDBackground />
+      <div className="content-wrapper">
+        <HeroSection />
+        <SectionDivider />
+        <FeaturedResearch />
+        <SectionDivider />
+        <ProjectPortfolio setPage={setPage} />
+        <SectionDivider />
+        <TechnicalExpertise />
+        <SectionDivider />
+        <ContactSection />
+      </div>
     </div>
   );
 }

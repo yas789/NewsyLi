@@ -73,7 +73,11 @@ function FloatingShapes() {
   return (
     <group ref={group}>
       <mesh position={[1, 0, 0]}>
+<<<<<<< HEAD
         <icosahedronBufferGeometry args={[0.5, 0]} />
+=======
+        <icosahedronGeometry args={[0.5, 0]} />
+>>>>>>> 8731218 (feat: add interactive 3D background with Three.js)
         <meshStandardMaterial 
           color="#00f7ff" 
           transparent 
@@ -83,7 +87,11 @@ function FloatingShapes() {
         />
       </mesh>
       <mesh position={[-1, 1, -1]} rotation={[1, 1, 0]}>
+<<<<<<< HEAD
         <torusBufferGeometry args={[0.3, 0.1, 16, 32]} />
+=======
+        <torusGeometry args={[0.3, 0.1, 16, 32]} />
+>>>>>>> 8731218 (feat: add interactive 3D background with Three.js)
         <meshStandardMaterial 
           color="#ff2d75" 
           transparent 
@@ -93,7 +101,11 @@ function FloatingShapes() {
         />
       </mesh>
       <mesh position={[0, -1, 1]} rotation={[0, 0.5, 0.5]}>
+<<<<<<< HEAD
         <octahedronBufferGeometry args={[0.4, 0]} />
+=======
+        <octahedronGeometry args={[0.4, 0]} />
+>>>>>>> 8731218 (feat: add interactive 3D background with Three.js)
         <meshStandardMaterial 
           color="#8a2be2" 
           transparent 

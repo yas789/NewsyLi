@@ -1,21 +1,136 @@
 /* Reset and base styles */
+:root {
+  --primary: #8a2be2;
+  --secondary: #00f7ff;
+  --accent: #ff2d75;
+  --dark: #0f0f23;
+  --darker: #0a0a15;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  background: linear-gradient(-45deg, var(--darker), #1a1a2e, #16213e, #0f0f23);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
   color: #fff;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Animated background elements */
+.bg-shape {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+  filter: blur(60px);
+  animation: float 15s ease-in-out infinite;
+}
+
+.bg-shape-1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--primary), transparent 70%);
+  top: -200px;
+  left: -200px;
+  animation-delay: 0s;
+}
+
+.bg-shape-2 {
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, var(--accent), transparent 70%);
+  bottom: -300px;
+  right: -200px;
+  animation-delay: 2s;
+  animation-duration: 20s;
+}
+
+.bg-shape-3 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--secondary), transparent 70%);
+  top: 50%;
+  right: -100px;
+  animation-delay: 4s;
+  animation-duration: 25s;
+}
+
+/* 3D Background Styles */
+.three-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+/* Ensure content stays above the 3D background */
+.content-wrapper {
+  position: relative;
+  z-index: 1;
+  background: rgba(15, 15, 35, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  min-height: 100vh;
+}
+
+/* Improve text readability over the background */
+h1, h2, h3, h4, h5, h6, p, a, li {
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Smooth transitions for theme changes */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .App {
   max-width: 1200px;
-  margin: 40px auto 0 auto;
-  padding: 0 2rem;
-  box-shadow: 0 8px 40px rgba(20, 20, 40, 0.25);
-  border-radius: 24px;
-  background: transparent;
+  margin: 0 auto;
+  padding: 2rem;
   position: relative;
+  z-index: 1;
+  background: rgba(15, 15, 35, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+/* Content wrapper to ensure proper stacking */
+.content-wrapper {
+  position: relative;
+  z-index: 2;
 }
 
 /* Hero Section Styles */

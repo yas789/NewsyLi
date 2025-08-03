@@ -56,6 +56,16 @@ function HeroSection() {
       <div className="floating-element fe1"></div>
       <div className="floating-element fe2"></div>
       <div className="hero-content">
+        <div className="profile-picture-container">
+          <div className="profile-picture-wrapper">
+            <img 
+              src="/images/pic2.jpg" 
+              alt="Yassir Maknaoui" 
+              className="profile-picture"
+            />
+            <div className="profile-picture-glow"></div>
+          </div>
+        </div>
         <div className="personal-intro">
           <h1 className="hero-name">Yassir Maknaoui</h1>
           <div className="education-badge">

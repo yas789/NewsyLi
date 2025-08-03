@@ -2,13 +2,15 @@ import React, { useRef, useEffect, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { OrbitControls, Stars } from '@react-three/drei';
+import FloatingEquations from './FloatingEquations';
 
-function Particles({ count = 2000 }) {
+function Particles({ count = 3000 }) {
   const mesh = useRef();
   const particlesGeometry = useMemo(() => {
     const positions = new Float32Array(count * 3);
+    // Increase the spread of particles (from 10 to 20)
     for (let i = 0; i < count * 3; i++) {
-      positions[i] = (Math.random() - 0.5) * 10;
+      positions[i] = (Math.random() - 0.5) * 20;
     }
     return new THREE.BufferAttribute(positions, 3);
   }, [count]);
@@ -17,20 +19,24 @@ function Particles({ count = 2000 }) {
     if (!mesh.current) return;
     
     // Animate particles
-    const time = clock.getElapsedTime() * 0.25;
+    const time = clock.getElapsedTime() * 0.1; // Slower animation
     const positions = mesh.current.geometry.attributes.position;
     
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
-      positions.array[i3] += Math.sin(time + i) * 0.001;
-      positions.array[i3 + 1] += Math.cos(time + i) * 0.001;
+      // More pronounced movement
+      positions.array[i3] += Math.sin(time + i * 0.1) * 0.01;
+      positions.array[i3 + 1] += Math.cos(time + i * 0.1) * 0.01;
+      // Keep particles within bounds
+      positions.array[i3] = ((positions.array[i3] % 20) + 20) % 20 - 10;
+      positions.array[i3 + 1] = ((positions.array[i3 + 1] % 20) + 20) % 20 - 10;
     }
     
     positions.needsUpdate = true;
     
-    // Rotate based on mouse position
-    mesh.current.rotation.x = mouse.y * 0.1;
-    mesh.current.rotation.y = mouse.x * 0.1;
+    // Smoother mouse following
+    mesh.current.rotation.x += (mouse.y * 0.5 - mesh.current.rotation.x) * 0.05;
+    mesh.current.rotation.y += (mouse.x * 0.5 - mesh.current.rotation.y) * 0.05;
   });
 
   return (
@@ -44,11 +50,12 @@ function Particles({ count = 2000 }) {
         />
       </bufferGeometry>
       <pointsMaterial 
-        size={0.02} 
+        size={0.05} // Increased size for better visibility
         color="#8a2be2"
         transparent 
         opacity={0.8}
         sizeAttenuation={true}
+        blending={THREE.AdditiveBlending}
       />
     </points>
   );
@@ -109,8 +116,9 @@ function FloatingShapes() {
 export default function ThreeDBackground() {
   return (
     <div className="three-bg">
+      <FloatingEquations />
       <Canvas
-        camera={{ position: [0, 0, 5], fov: 75 }}
+        camera={{ position: [0, 0, 10], fov: 60, far: 1000 }}
         style={{
           position: 'fixed',
           top: 0,
@@ -118,12 +126,14 @@ export default function ThreeDBackground() {
           width: '100vw',
           height: '100vh',
           zIndex: -1,
-          background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+          background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)',
+          overflow: 'hidden'
         }}
+        dpr={Math.min(window.devicePixelRatio, 2)}
       >
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} intensity={0.8} />
-        <Particles count={2000} />
+        <Particles count={5000} />
         <FloatingShapes />
         <Stars 
           radius={100} 

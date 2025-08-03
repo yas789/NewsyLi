@@ -85,20 +85,40 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   z-index: -1;
   overflow: hidden;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
 }
 
-/* Ensure content stays above the 3D background */
-.content-wrapper {
+/* Main app container */
+.App {
+  width: 100%;
+  min-height: 100vh;
   position: relative;
   z-index: 1;
-  background: rgba(15, 15, 35, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: transparent;
+  overflow-x: hidden;
+}
+
+/* Content wrapper */
+.content-wrapper {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
   min-height: 100vh;
+  background: rgba(15, 15, 35, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Improve text readability over the background */
@@ -111,26 +131,58 @@ h1, h2, h3, h4, h5, h6, p, a, li {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.App {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  position: relative;
-  z-index: 1;
-  background: rgba(15, 15, 35, 0.5);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-  min-height: 100vh;
-}
-
-/* Content wrapper to ensure proper stacking */
-.content-wrapper {
+/* Profile Picture Styles */
+.profile-picture-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
   position: relative;
   z-index: 2;
+}
+
+.profile-picture-wrapper {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
+  transition: all 0.3s ease;
+  background: rgba(15, 15, 35, 0.8);
+  backdrop-filter: blur(5px);
+}
+
+.profile-picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.profile-picture-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: 0 0 40px rgba(138, 43, 226, 0.6);
+  opacity: 0.7;
+  animation: pulse 4s infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 40px rgba(138, 43, 226, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 60px rgba(138, 43, 226, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 40px rgba(138, 43, 226, 0.6);
+  }
 }
 
 /* Hero Section Styles */

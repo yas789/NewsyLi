@@ -5,6 +5,11 @@
   --accent: #ff2d75;
   --dark: #0f0f23;
   --darker: #0a0a15;
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --transition-smooth: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 @keyframes gradientBG {
@@ -275,16 +280,22 @@ h1, h2, h3, h4, h5, h6, p, a, li {
   padding: 3rem 2.5rem;
   max-width: 900px;
   margin: 0 auto;
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 24px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 32px;
+  box-shadow: var(--glass-shadow), 0 0 80px rgba(168, 85, 247, 0.15);
+  border: 1px solid var(--glass-border);
   transform-style: preserve-3d;
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: var(--transition-smooth);
   animation: fadeIn 1s ease-out;
   overflow: hidden;
+}
+
+.hero-content:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--glass-shadow), 0 20px 80px rgba(168, 85, 247, 0.25);
+  border-color: rgba(168, 85, 247, 0.3);
 }
 
 .hero-content::before {
@@ -488,21 +499,40 @@ h2.hero-title::after {
 
 .cta-button {
   display: inline-block;
-  padding: 1rem 2rem;
+  padding: 1.2rem 2.5rem;
   background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
   color: white;
   text-decoration: none;
   border-radius: 50px;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: var(--transition-bounce);
   box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
   animation: fadeInUp 1s ease-out 0.6s both;
   margin-bottom: 1.5em;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
 }
 
 .cta-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 20px 40px rgba(168, 85, 247, 0.4);
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 25px 50px rgba(168, 85, 247, 0.5);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.cta-button:hover::before {
+  left: 100%;
 }
 
 nav {
@@ -523,17 +553,35 @@ nav a:hover {
 
 /* Card and Section Styles */
 .card, .project-card, .featured-project, .skill-category {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  border-radius: 15px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px);
+  border-radius: 20px;
   padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 2px 8px rgba(168, 85, 247, 0.08);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
   margin-bottom: 2rem;
-  transition: all 0.3s ease;
+  transition: var(--transition-smooth);
   opacity: 0;
   transform: translateY(30px);
   animation: fadeInCard 1s forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before, .project-card::before, .featured-project::before, .skill-category::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.5), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover::before, .project-card:hover::before, .featured-project:hover::before, .skill-category:hover::before {
+  opacity: 1;
 }
 
 .card:hover, .project-card:hover, .featured-project:hover, .skill-category:hover {
@@ -574,7 +622,8 @@ nav a:hover {
 
 .skill-item:hover, .tag:hover {
   background: rgba(168, 85, 247, 0.3);
-  transform: scale(1.05);
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 8px 20px rgba(168, 85, 247, 0.2);
 }
 
 .section-title {
@@ -836,38 +885,116 @@ nav a:hover {
 }
 
 /* Responsive Design */
-@media (max-width: 900px) {
-  .App {
-    padding: 0 1rem;
-  }
-  
-  .card-grid, .projects-grid, .skills-grid {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .card, .project-card, .skill-category {
-    width: 90%;
-    min-width: 0;
-  }
-}
-
-@media (max-width: 600px) {
-  .hero-title, .gradient-text {
-    font-size: 2rem;
-  }
-  
-  .hero-content {
-    padding: 1rem 0.5rem;
-  }
-  
-  .section-title {
-    font-size: 1.5rem;
+@media (max-width: 1024px) {
+  .content-wrapper {
+    padding: 15px;
   }
   
   .hero {
-    min-height: 40vh;
-    padding: 2rem 0;
+    margin: 1rem;
+  }
+  
+  .hero-content {
+    padding: 2rem 1.5rem;
+  }
+  
+  .projects-grid, .skills-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .App {
+    padding: 0 0.5rem;
+  }
+  
+  .content-wrapper {
+    padding: 10px;
+    border-radius: 16px;
+  }
+  
+  .hero {
+    margin: 0.5rem;
+    border-radius: 16px;
+  }
+  
+  .hero-content {
+    padding: 1.5rem 1rem;
+    border-radius: 20px;
+  }
+  
+  .projects-grid, .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .project-card, .skill-category {
+    padding: 1.5rem;
+  }
+  
+  .contact-links {
+    gap: 1rem;
+  }
+  
+  .contact-link {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-name {
+    font-size: 2.5rem;
+  }
+  
+  .hero-title, .gradient-text {
+    font-size: 1.8rem;
+  }
+  
+  .hero-content {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+  
+  .section-title {
+    font-size: 1.8rem;
+  }
+  
+  .hero {
+    min-height: 50vh;
+    padding: 1.5rem 0;
+  }
+  
+  .profile-picture-wrapper {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .education-badge .degree {
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+  }
+  
+  .hero-tagline {
+    font-size: 1.2rem;
+  }
+  
+  .hero-description {
+    font-size: 1rem;
+  }
+  
+  .cta-button {
+    padding: 1rem 2rem;
+    font-size: 0.95rem;
+  }
+  
+  .tech-tags, .skill-list {
+    gap: 0.4rem;
+  }
+  
+  .tag, .skill-item {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
   }
 }
 

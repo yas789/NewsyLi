@@ -1,19 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import './App.css';
 import D4SymmetriesDemo from './D4SymmetriesDemo';
 import FractalExplorer from './FractalExplorer';
 import ThreeDBackground from './ThreeDBackground';
+import ModuloMatrix from './ModuloMatrix';
+import PrimeSpiralDemo from './PrimeSpiralDemo';
 
-// Animated Background Elements
-const AnimatedBackground = () => {
-  return (
-    <>
-      <div className="bg-shape bg-shape-1"></div>
-      <div className="bg-shape bg-shape-2"></div>
-      <div className="bg-shape bg-shape-3"></div>
-    </>
-  );
-};
 
 const heroText = 'CS & Mathematics';
 
@@ -24,6 +16,7 @@ function HeroSection() {
   useEffect(() => {
     let i = 0;
     setTypedText('');
+    let timeoutId;
 
     function typeWriter() {
       if (i < heroText.length) {
@@ -34,10 +27,14 @@ function HeroSection() {
           return prev;
         });
         i++;
-        setTimeout(typeWriter, 100);
+        timeoutId = setTimeout(typeWriter, 100);
       }
     }
-    setTimeout(typeWriter, 500);
+    timeoutId = setTimeout(typeWriter, 500);
+    
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, []);
 
   // Blinking cursor effect
@@ -112,8 +109,12 @@ function FeaturedResearch() {
   );
 }
 
-function ProjectPortfolio({ setPage }) {
-  const projects = [
+const ProjectPortfolio = React.memo(function ProjectPortfolio({ setPage }) {
+  const handleDemoClick = useCallback((page) => {
+    setPage(page);
+  }, [setPage]);
+  
+  const projects = useMemo(() => [
     {
       title: 'Advanced Data Structures',
       desc: 'Implementation and analysis of complex data structures including advanced tree variants, graph algorithms, and probabilistic data structures with theoretical performance analysis.',
@@ -123,10 +124,11 @@ function ProjectPortfolio({ setPage }) {
       title: 'Mathematical Modeling Suite',
       desc: 'Collection of mathematical modeling projects including differential equation solvers, optimization algorithms, and statistical analysis tools with real-world applications.',
       tags: [
-        { label: 'Prime Spiral Demo', onClick: () => setPage('prime-spiral'), isDemo: true },
-        { label: 'Fourier Epicycles Demo', onClick: () => setPage('fourier-epicycles'), isDemo: true },
-        { label: 'D4 Symmetries Demo', onClick: () => setPage('d4-symmetries'), isDemo: true },
-        { label: 'Fractal Explorer Demo', onClick: () => setPage('fractal-explorer'), isDemo: true },
+        { label: 'Prime Spiral Demo', onClick: () => handleDemoClick('prime-spiral'), isDemo: true },
+        { label: 'Fourier Epicycles Demo', onClick: () => handleDemoClick('fourier-epicycles'), isDemo: true },
+        { label: 'D4 Symmetries Demo', onClick: () => handleDemoClick('d4-symmetries'), isDemo: true },
+        { label: 'Fractal Explorer Demo', onClick: () => handleDemoClick('fractal-explorer'), isDemo: true },
+        { label: 'Modulo Matrix Demo', onClick: () => handleDemoClick('modulo-matrix'), isDemo: true },
         { label: 'Python' },
         { label: 'NumPy' },
         { label: 'Mathematical Analysis' }
@@ -152,7 +154,8 @@ function ProjectPortfolio({ setPage }) {
       desc: 'Algorithms for geometric problems including convex hull computation, Voronoi diagrams, and spatial data structures with applications to computer graphics and GIS.',
       tags: ['Geometry', 'Spatial Algorithms', 'Visualization']
     }
-  ];
+  ], [handleDemoClick]);
+  
   return (
     <section className="section" id="projects">
       <h2 className="section-title fade-in-on-scroll">Project Portfolio</h2>
@@ -182,7 +185,7 @@ function ProjectPortfolio({ setPage }) {
       </div>
     </section>
   );
-}
+});
 
 function TechnicalExpertise() {
   const skills = [
@@ -226,51 +229,6 @@ function TechnicalExpertise() {
   );
 }
 
-function PrimeSpiralDemo() {
-  const [numPoints, setNumPoints] = useState(100);
-  const points = [];
-  const size = 320;
-  const center = size / 2;
-  const scale = size / 2.2 / Math.sqrt(numPoints);
-  let n = 1, count = 0;
-  function isPrime(x) {
-    if (x < 2) return false;
-    for (let i = 2; i <= Math.sqrt(x); i++) if (x % i === 0) return false;
-    return true;
-  }
-  while (count < numPoints) {
-    if (isPrime(n)) {
-      const angle = count * 0.32;
-      const r = scale * Math.sqrt(count);
-      const x = center + r * Math.cos(angle);
-      const y = center + r * Math.sin(angle);
-      points.push(<circle key={n} cx={x} cy={y} r={3.5} fill="#a855f7" stroke="#fff" strokeWidth="1" />);
-      count++;
-    }
-    n++;
-  }
-  return (
-    <div className="prime-spiral-demo fade-in-on-scroll">
-      <h3>Prime Number Spiral</h3>
-      <svg width={size} height={size} style={{background: 'rgba(255,255,255,0.03)', borderRadius: '12px', marginBottom: '1rem'}}>
-        {points}
-      </svg>
-      <div style={{marginTop: '0.5rem'}}>
-        <label htmlFor="numPoints">Number of Primes: </label>
-        <input
-          id="numPoints"
-          type="range"
-          min="20"
-          max="300"
-          value={numPoints}
-          onChange={e => setNumPoints(Number(e.target.value))}
-          style={{margin: '0 10px'}}
-        />
-        <span style={{color: '#a855f7', fontWeight: 600}}>{numPoints}</span>
-      </div>
-    </div>
-  );
-}
 
 function FourierEpicyclesDemo() {
   const [N, setN] = useState(10);
@@ -290,7 +248,9 @@ function FourierEpicyclesDemo() {
       anim = requestAnimationFrame(animate);
     }
     anim = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(anim);
+    return () => {
+      if (anim) cancelAnimationFrame(anim);
+    };
   }, []);
 
   // Calculate epicycles and wave
@@ -477,9 +437,9 @@ function ContactSection() {
         Interested in collaboration, research opportunities, or discussing computational complexity theory?
       </p>
       <div className="contact-links">
-        <a href="mailto:your.email@example.com" className="contact-link fade-in-on-scroll">📧 Email</a>
-        <a href="https://linkedin.com/in/yourprofile" className="contact-link fade-in-on-scroll">💼 LinkedIn</a>
-        <a href="https://github.com/yourusername" className="contact-link fade-in-on-scroll">🔗 GitHub</a>
+        <a href="mailto:zjac270@live.rhul.ac.uk" className="contact-link fade-in-on-scroll">📧 Email</a>
+        <a href="https://linkedin.com/in/yassir-maknaoui" className="contact-link fade-in-on-scroll">💼 LinkedIn</a>
+        <a href="https://github.com/NewsyLi" className="contact-link fade-in-on-scroll">🔗 GitHub</a>
         <a href="/resume.pdf" className="contact-link fade-in-on-scroll">📄 Resume</a>
       </div>
     </section>
@@ -608,6 +568,22 @@ function App() {
           </button>
         </div>
         <FractalExplorer />
+      </div>
+    );
+  }
+  
+  if (page === 'modulo-matrix') {
+    return (
+      <div className="App">
+        <div style={{margin: '2rem 0'}}>
+          <button
+            className="demo-toggle-btn"
+            onClick={() => setPage('main')}
+            style={{marginBottom: '2rem', padding: '0.5rem 1.2rem', borderRadius: '8px', border: 'none', background: '#a855f7', color: '#fff', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(168,85,247,0.10)', transition: 'background 0.2s'}}>
+            ← Back to Portfolio
+          </button>
+        </div>
+        <ModuloMatrix />
       </div>
     );
   }

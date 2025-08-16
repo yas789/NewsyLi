@@ -107,6 +107,25 @@ body {
   z-index: 1;
   background: transparent;
   overflow-x: hidden;
+  transition: var(--transition-smooth);
+}
+
+.App.with-navigation {
+  padding-left: 280px;
+}
+
+.App.with-navigation .content-wrapper {
+  max-width: none;
+  margin-left: 0;
+  padding-left: 0;
+  width: 100%;
+}
+
+.page-content {
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
+  background: transparent;
 }
 
 /* Content wrapper */
@@ -124,6 +143,14 @@ body {
   -webkit-backdrop-filter: blur(20px);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: var(--transition-smooth);
+}
+
+/* Adjust content wrapper when navigation is active */
+.App.with-navigation .content-wrapper {
+  max-width: calc(100vw - 320px);
+  margin: 0 20px;
+  width: calc(100% - 40px);
 }
 
 /* Improve text readability over the background */
@@ -222,6 +249,12 @@ h1, h2, h3, h4, h5, h6, p, a, li {
   animation: gradientBG 15s ease infinite;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Adjust hero for navigation */
+.App.with-navigation .hero {
+  margin: 2rem 1rem;
+  min-height: 85vh;
 }
 
 .hero:hover {
@@ -772,6 +805,12 @@ nav a:hover {
   margin-top: 3rem;
 }
 
+/* Adjust project grid for navigation */
+.App.with-navigation .projects-grid {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.8rem;
+}
+
 .project-card {
   background: rgba(255, 255, 255, 0.10);
   backdrop-filter: blur(24px);
@@ -813,6 +852,12 @@ nav a:hover {
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2.2rem;
   margin-top: 3rem;
+}
+
+/* Adjust skills grid for navigation */
+.App.with-navigation .skills-grid {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.8rem;
 }
 
 .skill-category {
@@ -884,8 +929,19 @@ nav a:hover {
   transform: scale(1.07) !important;
 }
 
-/* Responsive Design */
+/* Navigation responsive adjustments */
 @media (max-width: 1024px) {
+  .App.with-navigation {
+    padding-left: 0;
+  }
+  
+  .App.with-navigation .content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    width: 100%;
+  }
+  
   .content-wrapper {
     padding: 15px;
   }
@@ -903,14 +959,30 @@ nav a:hover {
   }
 }
 
+@media (min-width: 1600px) {
+  .App.with-navigation .content-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
 @media (max-width: 768px) {
   .App {
+    padding: 0 0.5rem;
+  }
+  
+  .App.with-navigation {
     padding: 0 0.5rem;
   }
   
   .content-wrapper {
     padding: 10px;
     border-radius: 16px;
+  }
+  
+  .page-content {
+    padding: 0 0.5rem;
   }
   
   .hero {

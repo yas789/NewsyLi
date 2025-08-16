@@ -5,6 +5,9 @@ import FractalExplorer from './FractalExplorer';
 import ThreeDBackground from './ThreeDBackground';
 import ModuloMatrix from './ModuloMatrix';
 import PrimeSpiralDemo from './PrimeSpiralDemo';
+import Navigation from './Navigation';
+import Breadcrumb from './Breadcrumb';
+import ScrollToTop from './ScrollToTop';
 
 
 const heroText = 'CS & Mathematics';
@@ -463,6 +466,9 @@ function SectionDivider() {
 }
 
 function App() {
+  const [page, setPage] = useState('main');
+  const [showNavigation, setShowNavigation] = useState(true);
+
   // Add smooth scroll behavior
   useEffect(() => {
     document.documentElement.style.scrollBehavior = 'smooth';
@@ -470,8 +476,6 @@ function App() {
       document.documentElement.style.scrollBehavior = '';
     };
   }, []);
-
-  const [page, setPage] = useState('main');
 
   // Scroll-triggered fade-in for .fade-in-on-scroll elements
   useEffect(() => {
@@ -513,95 +517,117 @@ function App() {
 
   if (page === 'prime-spiral') {
     return (
-      <div className="App">
-        <div style={{margin: '2rem 0'}}>
-          <button
-            className="demo-toggle-btn"
-            onClick={() => setPage('main')}
-            style={{marginBottom: '2rem', padding: '0.5rem 1.2rem', borderRadius: '8px', border: 'none', background: '#a855f7', color: '#fff', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(168,85,247,0.10)', transition: 'background 0.2s'}}>
-            ← Back to Portfolio
-          </button>
+      <div className={`App ${showNavigation ? 'with-navigation' : ''}`}>
+        <Navigation 
+          currentPage={page} 
+          setPage={setPage} 
+          isVisible={showNavigation}
+          onToggleNavigation={() => setShowNavigation(!showNavigation)}
+        />
+        <div className="page-content">
+          <Breadcrumb currentPage={page} setPage={setPage} />
+          <PrimeSpiralDemo />
         </div>
-        <PrimeSpiralDemo />
       </div>
     );
   }
   if (page === 'fourier-epicycles') {
     return (
-      <div className="App">
-        <div style={{margin: '2rem 0'}}>
-          <button
-            className="demo-toggle-btn"
-            onClick={() => setPage('main')}
-            style={{marginBottom: '2rem', padding: '0.5rem 1.2rem', borderRadius: '8px', border: 'none', background: '#a855f7', color: '#fff', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(168,85,247,0.10)', transition: 'background 0.2s'}}>
-            ← Back to Portfolio
-          </button>
+      <div className={`App ${showNavigation ? 'with-navigation' : ''}`}>
+        <Navigation 
+          currentPage={page} 
+          setPage={setPage} 
+          isVisible={showNavigation}
+          onToggleNavigation={() => setShowNavigation(!showNavigation)}
+        />
+        <div className="page-content">
+          <Breadcrumb currentPage={page} setPage={setPage} />
+          <FourierEpicyclesDemo />
         </div>
-        <FourierEpicyclesDemo />
       </div>
     );
   }
   if (page === 'd4-symmetries') {
     return (
-      <div className="App">
-        <div style={{margin: '2rem 0'}}>
-          <button
-            className="demo-toggle-btn"
-            onClick={() => setPage('main')}
-            style={{marginBottom: '2rem', padding: '0.5rem 1.2rem', borderRadius: '8px', border: 'none', background: '#a855f7', color: '#fff', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(168,85,247,0.10)', transition: 'background 0.2s'}}>
-            ← Back to Portfolio
-          </button>
+      <div className={`App ${showNavigation ? 'with-navigation' : ''}`}>
+        <Navigation 
+          currentPage={page} 
+          setPage={setPage} 
+          isVisible={showNavigation}
+          onToggleNavigation={() => setShowNavigation(!showNavigation)}
+        />
+        <div className="page-content">
+          <Breadcrumb currentPage={page} setPage={setPage} />
+          <D4SymmetriesDemo />
         </div>
-        <D4SymmetriesDemo />
       </div>
     );
   }
   if (page === 'fractal-explorer') {
     return (
-      <div className="App">
-        <div style={{margin: '2rem 0'}}>
-          <button
-            className="demo-toggle-btn"
-            onClick={() => setPage('main')}
-            style={{marginBottom: '2rem', padding: '0.5rem 1.2rem', borderRadius: '8px', border: 'none', background: '#a855f7', color: '#fff', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(168,85,247,0.10)', transition: 'background 0.2s'}}>
-            ← Back to Portfolio
-          </button>
+      <div className={`App ${showNavigation ? 'with-navigation' : ''}`}>
+        <Navigation 
+          currentPage={page} 
+          setPage={setPage} 
+          isVisible={showNavigation}
+          onToggleNavigation={() => setShowNavigation(!showNavigation)}
+        />
+        <div className="page-content">
+          <Breadcrumb currentPage={page} setPage={setPage} />
+          <FractalExplorer />
         </div>
-        <FractalExplorer />
       </div>
     );
   }
   
   if (page === 'modulo-matrix') {
     return (
-      <div className="App">
-        <div style={{margin: '2rem 0'}}>
-          <button
-            className="demo-toggle-btn"
-            onClick={() => setPage('main')}
-            style={{marginBottom: '2rem', padding: '0.5rem 1.2rem', borderRadius: '8px', border: 'none', background: '#a855f7', color: '#fff', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(168,85,247,0.10)', transition: 'background 0.2s'}}>
-            ← Back to Portfolio
-          </button>
+      <div className={`App ${showNavigation ? 'with-navigation' : ''}`}>
+        <Navigation 
+          currentPage={page} 
+          setPage={setPage} 
+          isVisible={showNavigation}
+          onToggleNavigation={() => setShowNavigation(!showNavigation)}
+        />
+        <div className="page-content">
+          <Breadcrumb currentPage={page} setPage={setPage} />
+          <ModuloMatrix />
         </div>
-        <ModuloMatrix />
       </div>
     );
   }
 
   return (
-    <div className="App">
+    <div className={`App ${showNavigation ? 'with-navigation' : ''}`}>
+      <Navigation 
+        currentPage={page} 
+        setPage={setPage} 
+        isVisible={showNavigation}
+        onToggleNavigation={() => setShowNavigation(!showNavigation)}
+      />
       <ThreeDBackground />
       <div className="content-wrapper">
-        <HeroSection />
+        <section id="hero">
+          <HeroSection />
+        </section>
         <SectionDivider />
-        <FeaturedResearch />
+        <section id="featured-research">
+          <FeaturedResearch />
+        </section>
         <SectionDivider />
-        <ProjectPortfolio setPage={setPage} />
+        <section id="projects">
+          <ProjectPortfolio setPage={setPage} />
+        </section>
         <SectionDivider />
-        <TechnicalExpertise />
+        <section id="skills">
+          <TechnicalExpertise />
+        </section>
         <SectionDivider />
-        <ContactSection />
+        <section id="contact">
+          <ContactSection />
+        </section>
       </div>
+      <ScrollToTop />
     </div>
   );
 }

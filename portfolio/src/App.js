@@ -2,9 +2,11 @@ import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import './App.css';
 import D4SymmetriesDemo from './D4SymmetriesDemo';
 import FractalExplorer from './FractalExplorer';
+import EnhancedFractalExplorer from './EnhancedFractalExplorer';
 import ThreeDBackground from './ThreeDBackground';
 import ModuloMatrix from './ModuloMatrix';
 import PrimeSpiralDemo from './PrimeSpiralDemo';
+import Blog from './Blog';
 import Navigation from './Navigation';
 import Breadcrumb from './Breadcrumb';
 import ScrollToTop from './ScrollToTop';
@@ -12,7 +14,7 @@ import ScrollToTop from './ScrollToTop';
 
 const heroText = 'CS & Mathematics';
 
-function HeroSection() {
+function HeroSection({ setPage }) {
   const [typedText, setTypedText] = useState('');
   const [showCursor, setShowCursor] = useState(true);
 
@@ -81,7 +83,10 @@ function HeroSection() {
         <p className="hero-description">
           Passionate about solving complex computational problems through mathematical insights and algorithmic innovation. Specializing in parameterized complexity theory, fixed-parameter tractability, and cutting-edge algorithm design.
         </p>
-        <a href="#projects" className="cta-button">Explore My Work</a>
+        <div className="hero-buttons">
+          <a href="#projects" className="cta-button">Explore My Work</a>
+          <button onClick={() => setPage('blog')} className="cta-button secondary">Mathematical Blog</button>
+        </div>
       </div>
     </section>
   );
@@ -124,17 +129,13 @@ const ProjectPortfolio = React.memo(function ProjectPortfolio({ setPage }) {
       tags: ['C++', 'Algorithm Analysis', 'Memory Optimization']
     },
     {
-      title: 'Mathematical Modeling Suite',
-      desc: 'Collection of mathematical modeling projects including differential equation solvers, optimization algorithms, and statistical analysis tools with real-world applications.',
+      title: 'Mathematical Explorations Blog',
+      desc: 'In-depth mathematical articles exploring the theory behind interactive demonstrations. Covers complex analysis, number theory, algebra, and more with comprehensive LaTeX explanations.',
       tags: [
-        { label: 'Prime Spiral Demo', onClick: () => handleDemoClick('prime-spiral'), isDemo: true },
-        { label: 'Fourier Epicycles Demo', onClick: () => handleDemoClick('fourier-epicycles'), isDemo: true },
-        { label: 'D4 Symmetries Demo', onClick: () => handleDemoClick('d4-symmetries'), isDemo: true },
-        { label: 'Fractal Explorer Demo', onClick: () => handleDemoClick('fractal-explorer'), isDemo: true },
-        { label: 'Modulo Matrix Demo', onClick: () => handleDemoClick('modulo-matrix'), isDemo: true },
-        { label: 'Python' },
-        { label: 'NumPy' },
-        { label: 'Mathematical Analysis' }
+        { label: 'Explore Mathematical Blog', onClick: () => handleDemoClick('blog'), isDemo: true },
+        { label: 'LaTeX' },
+        { label: 'Mathematical Writing' },
+        { label: 'Theoretical Analysis' }
       ]
     },
     {
@@ -574,7 +575,24 @@ function App() {
         />
         <div className="page-content">
           <Breadcrumb currentPage={page} setPage={setPage} />
-          <FractalExplorer />
+          <EnhancedFractalExplorer />
+        </div>
+      </div>
+    );
+  }
+  
+  if (page === 'blog') {
+    return (
+      <div className={`App ${showNavigation ? 'with-navigation' : ''}`}>
+        <Navigation 
+          currentPage={page} 
+          setPage={setPage} 
+          isVisible={showNavigation}
+          onToggleNavigation={() => setShowNavigation(!showNavigation)}
+        />
+        <div className="page-content">
+          <Breadcrumb currentPage={page} setPage={setPage} />
+          <Blog setPage={setPage} />
         </div>
       </div>
     );
@@ -608,7 +626,7 @@ function App() {
       <ThreeDBackground />
       <div className="content-wrapper">
         <section id="hero">
-          <HeroSection />
+          <HeroSection setPage={setPage} />
         </section>
         <SectionDivider />
         <section id="featured-research">

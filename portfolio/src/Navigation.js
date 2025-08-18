@@ -77,6 +77,18 @@ const Navigation = ({ currentPage, setPage, isVisible = true, onToggleNavigation
       ]
     },
     {
+      id: 'blog',
+      label: 'Mathematical Blog',
+      icon: '📚',
+      action: () => setPage('blog'),
+      subsections: [
+        { id: 'number-theory', label: 'Number Theory', action: () => setPage('blog') },
+        { id: 'complex-analysis', label: 'Complex Analysis', action: () => setPage('blog') },
+        { id: 'analysis', label: 'Analysis', action: () => setPage('blog') },
+        { id: 'algebra', label: 'Algebra', action: () => setPage('blog') }
+      ]
+    },
+    {
       id: 'code',
       label: 'Code & Projects',
       icon: '💻',
